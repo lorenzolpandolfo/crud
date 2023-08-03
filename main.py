@@ -1,10 +1,12 @@
 import mysql.connector
 import json
 
+
 class Usuario:
     def __init__(self, conexao, cursor):
         self.conexao = conexao
         self.cursor = cursor
+
 
 def conectar(h, u, p, d):
     try:
@@ -80,8 +82,8 @@ def checar_database_registrada():
 
 
 def menu(user):
-    print(user.conexao)
-    escolha = int(input("(1) Criar\n(2) Ler\n(3) Atualizar\n(4) Deletar\n> Selecione a opção: "))
+    espaçamento = ' '*10 + '│' + ' '*2
+    escolha = int(input("(1) Criar" + espaçamento + '(5) Configurações\n' + "(2) Ler" + '  ' + espaçamento + "\n(3) Atualizar      │" + "\n(4) Deletar        │\n> Selecione a opção: "))
     try:
         if escolha == 1:
             pass
@@ -95,11 +97,23 @@ def menu(user):
         elif escolha == 4:
             pass
         
-        else:
-            return 0
+        elif escolha == 5:
+            config()
     
     except Exception:
         print("[x] Valor inválido.\n")
+        menu()
+
+def config():
+    escolha = int(input('\n[-] Configurações\n(1) Alterar database\n> Selecione a opção: '))
+    try:
+        if escolha == 1:
+            print('\n[-] Registre a sua nova database:')
+            registar_database()
+        else:
+            pass
+    except Exception:
+        print('[x] Valor inválido.\n')
         menu()
 
 
