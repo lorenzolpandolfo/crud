@@ -20,7 +20,7 @@ def conectar(h, u, p, d):
         user = Usuario(conexao, cursor)
         
         print(f'[!] Conectado em {d} como {u}.')
-        menu(user)
+        return menu(user)
 
     except mysql.connector.Error as erro:
         print(f"[x] Houve um erro ao conectar-se com o banco de dados:\n └─ {erro}. \n\n> Registre novamente a sua database:")
@@ -44,47 +44,50 @@ def registar_database():
 
     with open('data.json', 'w', encoding='utf8') as arquivo:
         arquivo.write(json.dumps(login))
+        arquivo.close()
 
     print('[+] Database registrada. O login será automático na próxima sessão.\n[-] Realizando login...\n')
-    conectar(host, user, password, database)
+    return conectar(host, user, password, database)
 
 
 def checar_database_registrada():
-    with open('data.json', 'r', encoding='utf8') as arquivo:
         try:
-            dados = json.load(arquivo)
-            login = dados['database']
+            with open('data.json', 'r', encoding='utf8') as arquivo:
+                dados = json.load(arquivo)
+                login = dados['database']
 
-            esperado = ['host', 'user', 'password', 'database']
-            
-            for i, e in enumerate(esperado):
-                if e in login:
-                    if login[e] == 0:
-                        # Está faltando alguma informação no login
-                        print(f'[x] Não há {e} registrado na database.\n[-] Registre a sua database:')
-                        registar_database()
-                        break
+                esperado = ['host', 'user', 'password', 'database']
+                
+                for i, e in enumerate(esperado):
+                    if e in login:
+                        if login[e] == 0:
+                            # Está faltando alguma informação no login
+                            print(f'[x] Não há {e} registrado na database.\n[-] Registre a sua database:')
+                            return registar_database()
+                            
+                        else:
+                            # todos os elementos estao presentes
+                            if i == 3:
+                                return conectar(
+                                    login['host'],
+                                    login['user'],
+                                    login['password'],
+                                    login['database']
+                                )
+                                
                     else:
-                        # todos os elementos estao presentes
-                        if i == 3:
-                            conectar(
-                                login['host'],
-                                login['user'],
-                                login['password'],
-                                login['database']
-                            )
-                else:
-                    print('[x] Não há {e} no arquivo.')
+                        print('[x] Não há {e} no arquivo.\n[-] Registre a sua database:')
+                        return registar_database()
         
-        except Exception:
-            print("[X] Não foi encontrada nenhuma database registrada no arquivo.")
-            registar_database()
+        except Exception as err:
+            print(f"{err} [X] Não foi encontrada nenhuma database registrada no arquivo.\n[-] Registre a sua database:")
+            return registar_database()
 
 
 def menu(user):
-    espaçamento = ' '*10 + '│' + ' '*2
-    escolha = int(input("(1) Criar" + espaçamento + '(5) Configurações\n' + "(2) Ler" + '  ' + espaçamento + "\n(3) Atualizar      │" + "\n(4) Deletar        │\n> Selecione a opção: "))
     try:
+        escolha = int(input("(1) Criar" + ' '*10 + '│' + ' '*2 + '(5) Configurações\n' + "(2) Ler" + '  ' + ' '*10 + '│' + ' '*2 + "\n(3) Atualizar      │" + "\n(4) Deletar        │\n> Selecione a opção: "))
+
         if escolha == 1:
             pass
         
@@ -98,23 +101,24 @@ def menu(user):
             pass
         
         elif escolha == 5:
-            config()
-    
+            return config(user)
+
     except Exception:
         print("[x] Valor inválido.\n")
-        menu()
+        return menu(user)
 
-def config():
+def config(user):
     escolha = int(input('\n[-] Configurações\n(1) Alterar database\n> Selecione a opção: '))
     try:
         if escolha == 1:
             print('\n[-] Registre a sua nova database:')
-            registar_database()
+            return registar_database()
         else:
-            pass
+            return menu(user)
+        
     except Exception:
         print('[x] Valor inválido.\n')
-        menu()
+        return menu(user)
 
 
 if __name__ == '__main__':
@@ -140,7 +144,7 @@ if __name__ == '__main__':
 #conexao.commit()
 
 
-def create(tabela, ):
+def create(tabela):
     pass
 
 
