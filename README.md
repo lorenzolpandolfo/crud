@@ -1,4 +1,4 @@
-**Título do Projeto:** Terminal CRUD em Python com MySQL
+**Terminal CRUD em Python com MySQL** 
 
 **Descrição:**
 Este é um projeto de um aplicativo de CRUD (Create, Read, Update, Delete) desenvolvido em Python que interage com um banco de dados MySQL. O aplicativo é executado no terminal, proporcionando uma experiência de linha de comando simples e eficaz para gerenciar informações em um banco de dados.

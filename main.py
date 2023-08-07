@@ -47,5 +47,4 @@ def config(database):
 
 if __name__ == '__main__':
     database = database.Banco.checar_database_registrada()
-    if database:
-        menu(database)
+    menu(database)
