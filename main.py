@@ -161,7 +161,6 @@ def create(database):
     ptable.add_row(novos_valores)
     
     escolha = input(f"\n[-] O resultado será:\n{ptable}\n[?] Você deseja confirmar a operação? (S/n): ")
-
     if escolha.upper == 'S' or escolha == '':
         try:
             teste = ', '.join(str(e) if colunas[i][5] != 'auto_increment' else f'"{e}"' for i, e in enumerate(novos_valores))
@@ -176,17 +175,13 @@ def create(database):
             return menu(database)
 
     else:
-        print('[x] Operação cancelada pelo usuário.')
+        print('[x] Operação cancelada pelo usuário.\n')
         return menu(database)
-
-
 
 
 if __name__ == '__main__':
     checar_database_registrada()
     #conexao = conectar()
-
-
 
 # executa os comandos
 #cursor = conexao.cursor()
@@ -205,13 +200,9 @@ if __name__ == '__main__':
 # executa o commit
 #conexao.commit()
 
-
-
-
 # ler o banco de dados
 # resultado = cursor.fetchall()
 # print(resultado)
-
 
 #cursor.close()
 #conexao.close()
